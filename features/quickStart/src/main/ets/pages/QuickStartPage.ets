@@ -19,7 +19,7 @@ export struct QuickStartPage {
   }
 
   build() {
-    Navigation(){
+    Navigation(this.articlePathStack){
       Column() {
         Text(this.message)
           .fontSize(20)

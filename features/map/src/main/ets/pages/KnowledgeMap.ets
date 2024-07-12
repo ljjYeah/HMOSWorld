@@ -20,13 +20,9 @@ export struct KnowledgeMap {
 
   private getSections() {
     try{
-      console.log('===读取文件')
       getContext(this).resourceManager.getRawFileContent('MapData.json', (Error, value) => {
-
         const textDecoder = util.TextDecoder.create('utf-8')
-
         const res = textDecoder.decodeWithStream(value, {stream: false})
-        console.log('===文件内容', value)
         this.sections = JSON.parse(res);
       })
     } catch (err){

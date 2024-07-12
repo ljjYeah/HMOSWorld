@@ -1,11 +1,11 @@
 export class BannerClass {
   id: string = '';
-  imgSrc: ResourceStr = '';
+  imageSrc: string = '';
   url: string = '';
 
-  constructor(id: string, imgSrc: ResourceStr, url: string) {
+  constructor(id: string, imageSrc: string, url: string) {
     this.id = id;
-    this.imgSrc = imgSrc;
+    this.imageSrc = imageSrc;
     this.url = url;
   }
 }

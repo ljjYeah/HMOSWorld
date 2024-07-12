@@ -8,7 +8,7 @@ export struct ArticleDetailPage{
   controller: webview.WebviewController = new webview.WebviewController();
 
   aboutToAppear(): void {
-    this.articlePathStack.getParamByName('articleDetail')[0] as ArticleClass;
+   this.articleDetail = this.articlePathStack.getParamByName('articleDetail')[0] as ArticleClass;
   }
 
   build() {

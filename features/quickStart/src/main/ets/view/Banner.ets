@@ -20,7 +20,7 @@ export struct Banner {
   build() {
     Swiper() {
       ForEach(this.bannerList, (item: BannerClass, index: number) => {
-        Image(item.imgSrc)
+        Image($r(item.imageSrc))
           .width('100%')
           .padding({ top: 11, left: 10, right: 16 })
           .borderRadius(16)
