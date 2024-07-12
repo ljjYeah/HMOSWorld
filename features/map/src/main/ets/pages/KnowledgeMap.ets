@@ -14,13 +14,19 @@ export struct KnowledgeMap {
     { order: '05', title: '运营增长' },
     { order: '06', title: '商业变现' },
     { order: '07', title: '更多' }
-  ]
+  ];
+  @Provide('knowledgePageStack') knowledgePageStack: NavPathStack = new NavPathStack();
+  @State currentNavBarIndex: number = -1;
 
   private getSections() {
     try{
+      console.log('===读取文件')
       getContext(this).resourceManager.getRawFileContent('MapData.json', (Error, value) => {
+
         const textDecoder = util.TextDecoder.create('utf-8')
+
         const res = textDecoder.decodeWithStream(value, {stream: false})
+        console.log('===文件内容', value)
         this.sections = JSON.parse(res);
       })
     } catch (err){
@@ -32,50 +38,63 @@ export struct KnowledgeMap {
     this.getSections()
   }
 
-  build() {
-    Scroll() {
-      Column() {
-        Text('知识地图')
-          .fontWeight('HarmonyHeiTi-Bold')
-          .fontSize(24)
-          .fontColor(Color.Black)
-          .textAlign(TextAlign.Start)
-          .lineHeight(33)
-          .fontWeight(700)
-          .width('100%');
-        Image($r('app.media.knowledge_map_banner'))
-          .width('100%')
-          .borderRadius(16)
-          .margin({ top: 19, bottom: 8 });
-        Text('通过循序渐进的学习路径，无经验和有经验的开发者都可以轻松掌握ArkTS语言声明式开发范式，体验更简洁、更友好的HarmonyOS应用开发旅程。')
-          .fontFamily('HarmonyHeiTi')
-          .fontSize('14vp')
-          .fontColor('rgba(0,0,0,0.60)')
-          .fontWeight(400)
-          .textAlign(TextAlign.Start);
-        List(){
-          ForEach(this.navBarList, (item: NavBarItemType) => {
-            ListItem(){
-              NavBarItem({navBarItem: item})
-            }
-          })
-        }
-        .width('100%')
-        .margin({ top: 24 })
-      }
-      .padding({
-        top: 12,
-        right: 16,
-        bottom: 12,
-        left: 16
-      })
+  @Builder
+  PageMap(name: string) {
+    if (name === 'KnowledgeMapContent') {
+      KnowledgeMapContent({ section: this.sections[this.currentNavBarIndex]})
     }
-    .backgroundColor('#F1F3F5')
-    .align(Alignment.TopStart)
-    .constraintSize({ minHeight: '100%' })
-    .scrollable(ScrollDirection.Vertical)
-    .scrollBar(BarState.Auto)
-    .scrollBarColor(Color.Gray)
-    .edgeEffect(EdgeEffect.Spring)
+  }
+
+  build() {
+    Navigation(this.knowledgePageStack){
+      Scroll() {
+        Column() {
+          Text('知识地图')
+            .fontWeight('HarmonyHeiTi-Bold')
+            .fontSize(24)
+            .fontColor(Color.Black)
+            .textAlign(TextAlign.Start)
+            .lineHeight(33)
+            .fontWeight(700)
+            .width('100%');
+          Image($r('app.media.knowledge_map_banner'))
+            .width('100%')
+            .borderRadius(16)
+            .margin({ top: 19, bottom: 8 });
+          Text('通过循序渐进的学习路径，无经验和有经验的开发者都可以轻松掌握ArkTS语言声明式开发范式，体验更简洁、更友好的HarmonyOS应用开发旅程。')
+            .fontFamily('HarmonyHeiTi')
+            .fontSize('14vp')
+            .fontColor('rgba(0,0,0,0.60)')
+            .fontWeight(400)
+            .textAlign(TextAlign.Start);
+          List(){
+            ForEach(this.navBarList, (item: NavBarItemType) => {
+              ListItem(){
+                NavBarItem({navBarItem: item, currentNavBarIndex: this.currentNavBarIndex})
+              }
+            })
+          }
+          .width('100%')
+          .margin({ top: 24 })
+        }
+        .padding({
+          top: 12,
+          right: 16,
+          bottom: 12,
+          left: 16
+        })
+      }
+      .backgroundColor('#F1F3F5')
+      .align(Alignment.TopStart)
+      .constraintSize({ minHeight: '100%' })
+      .scrollable(ScrollDirection.Vertical)
+      .scrollBar(BarState.Auto)
+      .scrollBarColor(Color.Gray)
+      .edgeEffect(EdgeEffect.Spring)
+    }
+    .mode(NavigationMode.Stack)
+    .hideTitleBar(true)
+    .navDestination(this.PageMap)
+    .navBarWidth(288)
   }
 }
