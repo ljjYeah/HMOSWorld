@@ -38,6 +38,10 @@
     {
       "name": "quickStart",
       "srcPath": "./features/quickStart",
+    },
+    {
+      "name": "map",
+      "srcPath": "./features/map",
     }
   ]
 }
