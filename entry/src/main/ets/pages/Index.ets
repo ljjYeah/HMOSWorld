@@ -5,7 +5,7 @@ import { QuickStartPage } from '@ohos/quickStart'
 @Entry
 @Component
 struct Index {
-  @State currentIndex: number = 2;
+  @State currentIndex: number = 0;
   private tabsController: TabsController = new TabsController();
 
   @Builder
